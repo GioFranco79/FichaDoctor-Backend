@@ -4,12 +4,12 @@
 
 FichaDoctor es una plataforma de gestión médica digital que permite a doctores, pacientes y secretarias gestionar citas médicas, fichas clínicas, recetas, solicitudes de exámenes y mensajería interna.
 
-El backend expone una API RESTful construida como funciones serverless desplegadas en **Vercel**, con integración a **Supabase** como base de datos PostgreSQL y sistema de autenticación.
 
 ## Tecnologías
 
 - **Lenguaje:** JavaScript (Node.js)
-- **Runtime:** Vercel Serverless Functions
+- **Framework:** Express.js
+- **Hosting:** Railway
 - **Base de datos:** PostgreSQL (Supabase)
 - **Autenticación:** Supabase Auth (JWT)
 - **Almacenamiento:** Supabase Storage (documentos PDF)
@@ -137,13 +137,38 @@ Configurar en el dashboard de Vercel:
 | `SUPABASE_SERVICE_ROLE_KEY` | Clave de servicio (admin) de Supabase |
 | `ALLOWED_ORIGINS` | URLs permitidas por CORS (separadas por coma) |
 
-## Despliegue
+## Despliegue (Railway)
 
 1. Subir este repositorio a GitHub
-2. Importar en Vercel como nuevo proyecto
-3. Vercel detecta automáticamente las funciones serverless en `api/`
-4. Configurar las variables de entorno en el dashboard de Vercel
-5. Desplegar
+2. Ir a [railway.app](https://railway.app) → "New Project" → "Deploy from GitHub repo"
+3. Seleccionar el repositorio del Backend
+4. Railway detecta automáticamente Node.js y ejecuta `npm install` + `node server.js`
+5. Configurar las variables de entorno en el panel de Railway (Variables tab)
+6. Railway asigna un dominio público automáticamente (ej: `fichadoctor-backend.up.railway.app`)
+7. Actualizar la variable `NEXT_PUBLIC_API_URL` en el frontend con la URL del backend
+
+### Archivos de configuración para Railway
+
+| Archivo | Descripción |
+|---------|-------------|
+| `server.js` | Servidor Express que monta las rutas de `api/` |
+| `Procfile` | Indica a Railway cómo iniciar la app |
+| `railway.toml` | Configuración de deploy para Railway |
+
+### Ejecución local
+
+```bash
+# Instalar dependencias
+npm install
+
+# Crear archivo .env con las variables (ver .env.example)
+cp .env.example .env
+
+# Iniciar servidor
+npm start
+```
+
+El servidor inicia en `http://localhost:3001` por defecto.
 
 ## Roles del sistema
 
